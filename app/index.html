@@ -5,6 +5,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -59,6 +60,8 @@
       </div>
     </div>
 
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>-->
+
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -94,7 +97,49 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/helpers.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script type="text/ng-template" id="modalContent.html">
+          <div class="modal-header">
+            <h3 class="modal-title">Event action occurred!</h3>
+          </div>
+          <div class="modal-body">
+            /*<p>Action:
+            <pre>{{ vm.action }}</pre>
+            </p>*/
+            <p>Event:
+            <pre>{{ vm.event | json }}</pre>
+            <pre><input class="form-control" type="text" ng-model="vm.event.title">
+            <input class="form-control" type="color" ng-model="vm.event.color.primary">
+            <input class="form-control" type="color" ng-model="vm.event.color.secondary">
+            <p class="input-group" style="max-width: 250px">
+            <input
+              type="date"
+              class="form-control"
+              uib-datepicker-popup="dd MMMM yyyy"
+              ng-model="vm.event.startsAt">
+            </p>
+            <div
+              uib-timepicker
+              ng-model="vm.event.startsAt"
+              hour-step="1"
+              minute-step="15"
+              show-meridian="true">
+            </div>
+            <select class="form-control" id="draggable" ng-model="vm.event.draggable">
+              <option ng-selected="vm.event.draggable == true" ng-value="true">true</option>
+              <option ng-selected="vm.event.draggable == false" ng-value="false">false</option>
+            </select>
+          </pre>
+            
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="$close()">OK</button>
+          </div>
+        </script>
+
+
         <!-- endbuild -->
 </body>
 </html>

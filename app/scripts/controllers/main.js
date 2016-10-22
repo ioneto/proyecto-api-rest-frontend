@@ -8,23 +8,37 @@
  * Controller of the proyectoApiRestFrontendApp
  */
 angular.module('proyectoApiRestFrontendApp')
-    .controller('MainCtrl', function($scope, moment, calendarConfig) {
+    .controller('MainCtrl', function($scope, moment, alert, calendarConfig) {
         var vm = $scope;
+        var actions = [{
+            label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
+            onClick: function(args) {
+                alert.show('Edited', args.calendarEvent);
+            }
+        /*}, {
+            label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+            onClick: function(args) {
+                alert.show('Deleted', args.calendarEvent);
+            }*/
+        }];
         vm.events = [
             {
                 title: 'Draggable event',
                 color: calendarConfig.colorTypes.warning,
                 startsAt: moment().startOf('month').toDate(),
-                draggable: true
+                draggable: true,
+                /*resizable: true,*/
+                actions: actions
             },
             {
                 title: 'Non-draggable event',
                 color: calendarConfig.colorTypes.info,
                 startsAt: moment().startOf('month').toDate(),
-                draggable: false
+                draggable: false,
+                /*resizable: true,*/
+                actions: actions
             }
         ];
-
         vm.calendarView = 'year';
         vm.viewDate = moment().startOf('month').toDate();
         vm.cellIsOpen = true;
@@ -55,13 +69,26 @@ angular.module('proyectoApiRestFrontendApp')
 
         };
 
+        $scope.hola="hola";
+
+        vm.eventClicked = function(event) {
+            alert.show('Clicked', event);
+        };
+
+        vm.toggle = function($event, field, event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            event[field] = !event[field];
+        };
+
+
     });
 
-function setCalendar(scope,calendarView='month',viewDate=new Date(),events=[]){
-    scope.calendarView = calendarView;
-    scope.viewDate = viewDate;
-    scope.events = events;
-    scope.events = [
+function setCalendar($scope,calendarView='month',viewDate=new Date(),events=[]){
+    $scope.calendarView = calendarView;
+    $scope.viewDate = viewDate;
+    $scope.events = events;
+    $scope.events = [
         {
             title: 'My event title', // The title of the event
             startsAt: new Date("October 20, 2016 11:13:00"), // A javascript date object for when the event starts
