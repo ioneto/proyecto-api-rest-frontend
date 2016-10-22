@@ -19,9 +19,10 @@ angular
     'ngSanitize',
     'ngTouch',
     'mwl.calendar',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'restangular'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider, RestangularProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -36,4 +37,14 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+      $httpProvider.defaults.useXDomain = true;
+      $httpProvider.defaults.withCredentials = true;
+      delete $httpProvider.defaults.headers.common["X-Requested-With"];
+      $httpProvider.defaults.headers.common["Accept"] = "application/json";
+      $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
+
+    RestangularProvider.setBaseUrl('localhost:3000');
+    RestangularProvider.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+
   });

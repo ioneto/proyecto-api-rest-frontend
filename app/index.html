@@ -50,8 +50,15 @@
       </div>
     </div>
 
-    <div class="container">
-    <div ng-view=""></div>
+    <div class="row">
+
+      <div class="col-sm-1"></div>
+
+      <div class="col-sm-10">
+        <!--<div class="container">-->
+        <div ng-view=""></div>
+        <!--</div>-->
+      </div>
     </div>
 
     <div class="footer">
@@ -91,6 +98,8 @@
     <script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/interact/interact.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/restangular/src/restangular.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

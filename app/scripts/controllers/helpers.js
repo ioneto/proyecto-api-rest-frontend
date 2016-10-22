@@ -1,23 +1,35 @@
-angular
-  .module('proyectoApiRestFrontendApp')
-  .factory('alert', function($uibModal) {
+angular.module('proyectoApiRestFrontendApp')
+    .factory('alert', function($uibModal) {
+        function show(modalUrl) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope, Restangular){
+                    $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
 
-    function show(action, event) {
-      return $uibModal.open({
-        templateUrl: 'modalContent.html',
-        controller: function() {
-          //console.log("hika");
-          var vm = this;
-          vm.action = action;
-          vm.event = event;
-          vm.hola=event;
-        },
-        controllerAs: 'vm'
-      });
-    }
+                    $scope.submitModal = function(){
+                        var peticion = Restangular.all('subjects');
 
-    return {
-      show: show
-    };
+                        peticion.getList().then(function(subjects) {
+                            $scope.titulo = subjects;
+                        });
 
-  });
+                        $scope.titulo = Restangular.all('subjects').getList().$object;
+
+                        var newReview = {
+                            user_subject_id: $scope.asignatura,
+                            fechaEvaluacion: $scope.fecha
+                        };
+
+                        //peticion.post(newReview);
+                        alert($scope.titulo);
+                    }
+                },
+            });
+        }
+
+        return {
+            show: show
+        };
+    });
