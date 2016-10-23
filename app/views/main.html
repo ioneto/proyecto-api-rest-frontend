@@ -8,6 +8,22 @@
                 <i class="glyphicon glyphicon-plus"></i> Nuevo evento
             </button>
         </div>
+        <div class="col-md-12 text-left">
+            <button class="btn btn-primary"
+                    ng-click="modalShowUsers()">
+                <i class="glyphicon glyphicon-plus"></i> Mostrar Usuarios
+            </button>
+            <!--<input type="text"  id="inputTitulo" ng-model="user_id" placeholder="Id de Usuario">-->
+            <button class="btn btn-primary"
+                    ng-click="modalShowUser()">
+                <i class="glyphicon glyphicon-plus"></i> Buscar Usuario
+            </button>
+
+            <button class="btn btn-primary"
+                    ng-click="modalNewReview()">
+                <i class="glyphicon glyphicon-plus"></i> Registrar Evaluacion
+            </button>
+        </div>
     </div>
 
     <br>
@@ -97,5 +113,97 @@
             </div>
         </form>
     </script>
+
+     <script type="text/ng-template" id="modalNewReview.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center" id="modal-title">Nueva Fecha</h3>
+        </div>
+            <div class="modal-body" id="modal-body">
+                <div class="form-group">
+                        <label for="inputAsignatura">Asignatura</label>
+                        <select class="form-control" ng-repeat="item in subjects" id="asignatura" ng-model="newReview.asignatura">
+                         <option ng-value="item.ramos.id">{{item.ramos.sigla}}</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputTitulo">Titulo</label>
+                    <input type="text" class="form-control" id="inputTitulo" ng-model="newReview.titulo" placeholder="Titulo">
+                </div>
+                <div class="form-group">
+                    <label for="inputFecha">Fecha</label>
+                    <input type="date" class="form-control" id="inputFecha" ng-model="newReview.fechaEvaluacion" placeholder="DD/MM/AAAA">
+                </div>
+                <div class="form-group">
+                    <label for="inputNota">Nota:</label>
+                    <input type="text" class="form-control" id="inputNota" ng-model="newReview.nota" >
+                </div>                    
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" ng-click="modalShowUser()">OK</button>
+                    <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+    </script>
+
+    <script type="text/ng-template" id="modalShowUsers.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center" id="modal-title">Mostrar Usuarios</h3>
+        </div>
+            <div class="modal-body" id="modal-body">
+                 <!--<pre ng-repeat="user in users">{{ user | json }}</pre>-->
+                 <pre >{{ userOne | json }}</pre>
+                 <pre >{{ hola }}</pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+    </script>
+
+    <script type="text/ng-template" id="modalfindUser.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center" id="modal-title">Buscar Usuario</h3>
+        </div>
+            <div class="modal-body" id="modal-body">
+                 <pre >
+                    <label for="idUsuario">Id Usuario:</label>
+                    <input type="text"  id="idUser" ng-model="user_id" placeholder="Id de Usuario"></pre>
+                 <pre >{{ user_id }}</pre>
+                 <pre >{{ users }}</pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="findUser()">OK</button>
+                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+    </script>
+
+    <script type="text/ng-template" id="modalShowUser.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center" id="modal-title">Mostrar Usuario</h3>
+        </div>
+            <div class="modal-body" id="modal-body" ng-repeat="item in subjects">
+                 <pre>{{ users | json }}</pre>
+                  <!--<pre>{{ users.user.subjects }}</pre>-->
+                 <!--<pre >{{ user_id }}</pre>-->
+                 <pre >{{ item.ramos.sigla }}</pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+    </script>
+
+    <script type="text/ng-template" id="modalShow.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center" id="modal-title">Mostrar </h3>
+        </div>
+            <div class="modal-body" id="modal-body">
+                 <pre>{{ reviews | json }}</pre>
+                  <!--<pre>{{ users.user.subjects }}</pre>-->
+                 <!--<pre >{{ user_id }}</pre>-->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+    </script>
+
+     
 
 </div>

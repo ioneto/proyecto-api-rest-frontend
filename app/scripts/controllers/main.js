@@ -8,10 +8,36 @@
  * Controller of the proyectoApiRestFrontendApp
  */
 angular.module('proyectoApiRestFrontendApp')
-    .controller('MainCtrl', function($scope, moment, alert, calendarConfig) {
+    .controller('MainCtrl', function($scope,$resource,moment, alert, calendarConfig) {
         $scope.modalNewEvent = function(){
             alert.show('modalNewEvent.html');
+        };        
+
+        $scope.modalShowUsers = function(){
+            alert.showUsers('modalShowUsers.html',$scope.hola);
         };
+
+        $scope.modalShowUser = function(){
+            alert.showUser('modalfindUser.html',$scope.user_id,{});
+        };
+
+        $scope.modalNewReview = function(){
+            alert.newReview('modalNewReview.html',$scope.users,$scope.subjects);
+        };
+
+        var Users = $resource('http://localhost:3000/users/:userId/', {userId:'@id'});
+        var Subjects = $resource('http://localhost:3000/users/:userId/subjects/:userSubjectId', 
+            {userId:1,userSubjectId:'@id'});
+        $scope.users= Users.get({userId: 1});
+        $scope.subjects= Subjects.query();
+        //$scope.Subjects=Subjects;
+
+
+
+        $scope.hola=1;
+        $scope.user_id=0;
+
+        
 
         var vm = $scope;
         var actions = [{
