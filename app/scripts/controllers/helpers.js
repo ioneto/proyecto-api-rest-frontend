@@ -130,7 +130,8 @@ angular.module('proyectoApiRestFrontendApp')
                     $scope.users=users;//Users.get({userId: user});
                     $scope.subjects=subjects;
                     $scope.Review=Review; 
-                    $scope.newReview={};  
+                    $scope.newReview={};
+                    $scope.newReview.colorSecondary='#f0fb28';
                     $scope.reviews=[];  
 
 
