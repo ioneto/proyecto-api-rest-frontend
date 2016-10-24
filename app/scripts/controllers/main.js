@@ -8,15 +8,9 @@
  * Controller of the proyectoApiRestFrontendApp
  */
 angular.module('proyectoApiRestFrontendApp')
-<<<<<<< HEAD
     .controller('MainCtrl', function($scope,$resource,moment, alert, calendarConfig) {
         $scope.modalRegisterSubjectEvent = function(){
             alert.registerSubject('modalRegisterSubject.html',$scope.users,$scope.subjects);
-=======
-    .controller('MainCtrl', function($scope, $resource, moment, alert, calendarConfig) {
-        $scope.modalNewEvent = function(){
-            alert.show('modalNewEvent.html');
->>>>>>> 92e6ac369303fbff07e6d807cd5a45066ea67471
         };        
 
         $scope.modalShowUsers = function(){
