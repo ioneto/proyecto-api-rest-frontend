@@ -8,9 +8,15 @@
  * Controller of the proyectoApiRestFrontendApp
  */
 angular.module('proyectoApiRestFrontendApp')
+<<<<<<< HEAD
+    .controller('MainCtrl', function($scope,$resource,moment, alert, calendarConfig) {
+        $scope.modalRegisterSubjectEvent = function(){
+            alert.registerSubject('modalRegisterSubject.html',$scope.users,$scope.subjects);
+=======
     .controller('MainCtrl', function($scope, $resource, moment, alert, calendarConfig) {
         $scope.modalNewEvent = function(){
             alert.show('modalNewEvent.html');
+>>>>>>> 92e6ac369303fbff07e6d807cd5a45066ea67471
         };        
 
         $scope.modalShowUsers = function(){
@@ -28,8 +34,11 @@ angular.module('proyectoApiRestFrontendApp')
         var Users = $resource('http://localhost:3000/users/:userId/', {userId:'@id'});
         var Subjects = $resource('http://localhost:3000/users/:userId/subjects/:userSubjectId', 
             {userId:1,userSubjectId:'@id'});
+        //var UserSubjects = $resource('http://localhost:3000/users/:userId/subjects/:userSubjectId', 
+            //{userId:1,userSubjectId:'@id'});
         $scope.users= Users.get({userId: 1});
         $scope.subjects= Subjects.query();
+        //$scope.us= Subjects.query();
         //$scope.Subjects=Subjects;
 
 
