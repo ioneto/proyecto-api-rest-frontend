@@ -22,7 +22,7 @@ angular
     'ui.bootstrap',
     'restangular'
   ])
-  .config(function ($routeProvider, $httpProvider, RestangularProvider) {
+  .config(function ($routeProvider, $httpProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -43,8 +43,5 @@ angular
       delete $httpProvider.defaults.headers.common["X-Requested-With"];
       $httpProvider.defaults.headers.common["Accept"] = "application/json";
       $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
-
-    RestangularProvider.setBaseUrl('localhost:3000');
-    RestangularProvider.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
 
   });

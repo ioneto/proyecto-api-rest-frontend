@@ -3,27 +3,14 @@ angular.module('proyectoApiRestFrontendApp')
         function show(modalUrl) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, Restangular){
+                controller: function($uibModalInstance ,$scope, $resource){
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
 
                     $scope.submitModal = function(){
-                        var peticion = Restangular.all('subjects');
+                        var Review = $resource('http://localhost:3000/reviews/:reviewId');
 
-                        peticion.getList().then(function(subjects) {
-                            $scope.titulo = subjects;
-                        });
-
-                        $scope.titulo = Restangular.all('subjects').getList().$object;
-
-                        var newReview = {
-                            user_subject_id: $scope.asignatura,
-                            fechaEvaluacion: $scope.fecha
-                        };
-
-                        //peticion.post(newReview);
-                        alert($scope.titulo);
                     }
                 },
             });
@@ -32,7 +19,7 @@ angular.module('proyectoApiRestFrontendApp')
         function showUsers(modalUrl,hola) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, $resource, Restangular){
+                controller: function($uibModalInstance ,$scope, $resource){
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
@@ -48,21 +35,7 @@ angular.module('proyectoApiRestFrontendApp')
 
 
                     $scope.submitModal = function(){
-                        var peticion = Restangular.all('subjects');
 
-                        peticion.getList().then(function(subjects) {
-                            $scope.titulo = subjects;
-                        });
-
-                        $scope.titulo = Restangular.all('subjects').getList().$object;
-
-                        var newReview = {
-                            user_subject_id: $scope.asignatura,
-                            fechaEvaluacion: $scope.fecha
-                        };
-
-                        //peticion.post(newReview);
-                        alert($scope.titulo);
                     }
                 },
             });
@@ -71,7 +44,7 @@ angular.module('proyectoApiRestFrontendApp')
         function showUser(modalUrl,user,users) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, $resource, Restangular){
+                controller: function($uibModalInstance ,$scope, $resource){
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
@@ -99,7 +72,7 @@ angular.module('proyectoApiRestFrontendApp')
         function showUserFind(modalUrl,user,users) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, $resource, Restangular){
+                controller: function($uibModalInstance ,$scope, $resource){
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
@@ -116,7 +89,7 @@ angular.module('proyectoApiRestFrontendApp')
         function newReview(modalUrl,users,subjects,Review) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, $resource, Restangular){
+                controller: function($uibModalInstance ,$scope, $resource){
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
@@ -148,7 +121,7 @@ angular.module('proyectoApiRestFrontendApp')
         function showReview(modalUrl,reviews,users) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, Restangular){
+                controller: function($uibModalInstance ,$scope){
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }

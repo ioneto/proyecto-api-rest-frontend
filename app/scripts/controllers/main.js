@@ -8,7 +8,7 @@
  * Controller of the proyectoApiRestFrontendApp
  */
 angular.module('proyectoApiRestFrontendApp')
-    .controller('MainCtrl', function($scope,$resource,moment, alert, calendarConfig) {
+    .controller('MainCtrl', function($scope, $resource, moment, alert, calendarConfig) {
         $scope.modalNewEvent = function(){
             alert.show('modalNewEvent.html');
         };        
