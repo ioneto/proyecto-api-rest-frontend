@@ -136,6 +136,51 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
+        function registerSubject(modalUrl,users,us) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope,$resource){
+                    $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                    $scope.users=users;
+                    $scope.subject={};
+                    $scope.us=us;
+                    //$scope.subjects=[];
+                    $scope.sub=[];
+                    var a=[];
+
+                    var Subjects = $resource('http://localhost:3000/subjects/:subjectId/', 
+                        {subjectId:'@id'});
+                    $scope.subjects = Subjects.query()/*function(){
+                        $scope.subjects=ramos;
+                        //$scope.ramos=ramos;
+                        for (var x = 0, lent = $scope.users.subjects.length; x < lent; x++){
+                            for (var i = 0, len = ramos.length; i < len; i++){
+                                if($scope.users.subjects[x].sigla==ramos[i].sigla){
+                                    a.push(i)
+                                   console.log(a);                       
+                                }
+                            }
+                        } 
+
+                        console.log(ramos.length-a.length);
+
+                        for (var x = 0, lent = a.length; x < lent; x++){
+                            for (var i = 0, len = ramos.length; i < len; i++){
+                                if(a[x]!=i){
+                                    $scope.sub.push(ramos[i]);                                                          
+                                }
+                            }
+                        } 
+
+                        console.log($scope.subjects);
+                    });*/
+                },
+            });
+        }
+
 
 
         return {
@@ -143,6 +188,7 @@ angular.module('proyectoApiRestFrontendApp')
             showUsers: showUsers,
             showUser: showUser,
             newReview: newReview,
-            showReview: showReview
+            showReview: showReview,
+            registerSubject: registerSubject,
         };
     });
