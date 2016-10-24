@@ -11,7 +11,7 @@ angular.module('proyectoApiRestFrontendApp')
     .controller('MainCtrl', function($scope, $resource, moment, alert, calendarConfig) {
         $scope.modalNewEvent = function(){
             alert.show('modalNewEvent.html');
-        };        
+        };
 
         $scope.modalShowUsers = function(){
             alert.showUsers('modalShowUsers.html',$scope.hola);
@@ -37,7 +37,7 @@ angular.module('proyectoApiRestFrontendApp')
         $scope.hola=1;
         $scope.user_id=0;
 
-        
+
 
         var vm = $scope;
         var actions = [{
