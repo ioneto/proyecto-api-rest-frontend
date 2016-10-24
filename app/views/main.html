@@ -3,26 +3,16 @@
 
     <div class="row">
         <div class="col-md-12 text-center">
-            <button class="btn btn-primary"
-                    ng-click="modalNewReview()">
-                <i class="glyphicon glyphicon-plus"></i> Nuevo evento
-            </button>
-        </div>
-        <div class="col-md-12 text-left">
-            <button class="btn btn-primary"
-                    ng-click="modalShowUsers()">
-                <i class="glyphicon glyphicon-plus"></i> Mostrar Usuarios
-            </button>
-            <!--<input type="text"  id="inputTitulo" ng-model="user_id" placeholder="Id de Usuario">-->
-            <button class="btn btn-primary"
-                    ng-click="modalShowUser()">
-                <i class="glyphicon glyphicon-plus"></i> Buscar Usuario
-            </button>
-
-            <button class="btn btn-primary"
-                    ng-click="modalRegisterSubjectEvent()">
-                <i class="glyphicon glyphicon-plus"></i> Asignar Ramos
-            </button>
+            <div class="btn-group">
+                <button class="btn btn-primary"
+                        ng-click="modalRegisterUserSubject()">
+                    <i class="glyphicon glyphicon-plus"></i> Asignar Ramo
+                </button>
+                <button class="btn btn-primary"
+                        ng-click="modalNewReview()">
+                    <i class="glyphicon glyphicon-plus"></i> Registrar Evaluacion
+                </button>
+            </div>
         </div>
     </div>
 
@@ -113,24 +103,26 @@
         </form>
     </script>-->
 
+
      <script type="text/ng-template" id="modalNewReview.html">
+
         <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Nueva Evaluación</h3>
+            <h3 class="modal-title text-center">Nueva Evaluación</h3>
         </div>
-            <div class="modal-body" id="modal-body">
+            <div class="modal-body">
                 <div class="form-group">
-                        <label for="inputAsignatura">Asignatura</label>
-                        <select class="form-control" id="asignatura" ng-model="newReview.asignatura">
+                        <label for="inputAsignaturaNewReview">Asignatura</label>
+                        <select class="form-control" id="inputAsignaturaNewReview" ng-model="newReview.asignatura">
                          <option ng-repeat="item in subjects" ng-value="item.ramos.id">{{item.ramos.sigla}}</option>
                         </select>
                 </div>
                 <div class="form-group">
                     <label for="inputTitulo">Titulo</label>
-                    <input type="text" class="form-control" id="inputTitulo" ng-model="newReview.title" placeholder="Titulo">
+                    <input type="text" class="form-control" ng-model="newReview.title" placeholder="Titulo">
                 </div>
                 <div class="form-group">
                     <label for="inputColorPrimario">Color Primario</label>
-                    <input type="color" class="form-control" id="inputColor" ng-model="newReview.colorPrimary">
+                    <input type="color" class="form-control" id="inputColorPrimario" ng-model="newReview.colorPrimary">
                 </div>
                 <div class="form-group">
                     <label for="inputColorSecundario">Color Secundario</label>
@@ -153,102 +145,64 @@
                     <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
                 </div>
             </div>
-            <script type="text/javascript">
-                        $(function () {
-                            $('#inputFechaInicio').datetimepicker();
-                            $('#inputFechaTermino').datetimepicker();
-                            });
-                        </script>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#inputFechaInicio').datetimepicker();
+                $('#inputFechaTermino').datetimepicker();
+            });
+        </script>
 
     </script>
 
+    <script></script>
 
-
-    <script type="text/ng-template" id="modalShowUsers.html">
+    <script type="text/ng-template" id="modalRegisterUserSubject.html">
         <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Mostrar Usuarios</h3>
+            <h3 class="modal-title text-center">Asignar Ramo</h3>
         </div>
-            <div class="modal-body" id="modal-body">
-                 <!--<pre ng-repeat="user in users">{{ user | json }}</pre>-->
-                 <pre >{{ userOne | json }}</pre>
-                 <pre >{{ hola }}</pre>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputAsignatura">Asignaturas</label>
+                <select class="form-control" id="inputAsignatura" ng-model="newUserSubject.subject_id" ng-options="item.id as item.name for item in subjects">
+                    <option value="" selected="selected" hidden="hidden">Seleccionar...</option>
+                </select>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            <div class="form-group">
+                <label for="inputSemestreModalRegisterUserSubject">Semestre</label>
+                <input type="text" class="form-control" id="inputSemestreModalRegisterUserSubject" ng-model="newUserSubject.semester" placeholder="Semestre">
+                <span class="help-block">Ejemplo: 2016-2</span>
             </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary pull-left" type="button" ng-click="modalNewSubject()"><i class="glyphicon glyphicon-plus"></i> Registrar Asignatura</button>
+            <button class="btn btn-primary" type="button" ng-click="saveUserSubject()">OK</button>
+            <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+        </div>
     </script>
 
-    <script type="text/ng-template" id="modalfindUser.html">
+    <script type="text/ng-template" id="modalNewSubject.html">
         <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Buscar Usuario</h3>
+            <h3 class="modal-title text-center">Nueva Asignatura</h3>
         </div>
-            <div class="modal-body" id="modal-body">
-                 <pre >
-                    <label for="idUsuario">Id Usuario:</label>
-                    <input type="text"  id="idUser" ng-model="user_id" placeholder="Id de Usuario"></pre>
-                 <pre >{{ user_id }}</pre>
-                 <pre >{{ users }}</pre>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputTituloModalNewSubject">Titulo</label>
+                <input type="text" class="form-control" id="inputTituloModalNewSubject" ng-model="newSubject.name" placeholder="Titulo">
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" type="button" ng-click="findUser()">OK</button>
-                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            <div class="form-group">
+                <label for="inputSiglaModalNewSubject">Sigla</label>
+                <input type="text" class="form-control" id="inputSiglaModalNewSubject" ng-model="newSubject.initials" placeholder="Sigla">
             </div>
-    </script>
-
-    <script type="text/ng-template" id="modalShowUser.html">
-        <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Mostrar Usuario</h3>
+            <div class="form-group">
+                <label for="inputCreditosModalNewSubject">Creditos</label>
+                <input type="number" class="form-control" id="inputCreditosModalNewSubject" ng-model="newSubject.credits" placeholder="Creditos">
+            </div>
         </div>
-            <div class="modal-body" id="modal-body">
-                 <pre>{{ users | json }}</pre>
-                  <!--<pre>{{ users.user.subjects }}</pre>-->
-                 <!--<pre >{{ user_id }}</pre>-->
-                 <!--<pre >{{ item.ramos.sigla }}</pre>-->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
-            </div>
-    </script>
-
-    <script type="text/ng-template" id="modalRegisterSubject.html">
-        <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Asignar Ramo</h3>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="saveSubject()">OK</button>
+            <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
         </div>
-            <pre style="text-align: center">{{ users.fullname}}</pre>
-            <pre style="text-align: center"> Asignatura(s) <br><br/><label  ng-repeat="item in users.subjects">{{ item.sigla}} </pre>
-            <div class="modal-body" id="modal-body">
-                <div class="form-group">
-                        <label for="inputAsignatura">Asignatura</label>
-                        <select class="form-control" id="asignatura" ng-model="subject.asignatura">{{subjects}}
-                         <!--<option ng-repeat="item in subjects" ng-value="item.sigla">{{item.sigla}}</option>-->
-                        </select>
-                </div>
-                <div class="form-group">
-                    <label for="inputTitulo">Titulo</label>
-                    <input type="text" class="form-control" id="inputTitulo" ng-model="newReview.title" placeholder="Titulo">
-                </div>
-            
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="button" ng-click="modalShowUser()">OK</button>
-                    <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
-                </div>
-            </div>
     </script>
-
-    <script type="text/ng-template" id="modalShow.html">
-        <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Mostrar </h3>
-        </div>
-            <div class="modal-body" id="modal-body">
-                 <pre>{{ reviews | json }}</pre>
-                  <!--<pre>{{ users.user.subjects }}</pre>-->
-                 <!--<pre >{{ user_id }}</pre>-->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
-            </div>
-    </script>
-
-
 
 </div>
