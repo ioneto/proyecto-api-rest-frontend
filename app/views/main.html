@@ -86,7 +86,6 @@
     </div>
 
     <br>
-
     <script type="text/ng-template" id="modalNewEvent.html">
         <div class="modal-header">
             <h3 class="modal-title text-center" id="modal-title">Nuevo Evento</h3>
@@ -116,33 +115,54 @@
 
      <script type="text/ng-template" id="modalNewReview.html">
         <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Nueva Fecha</h3>
+            <h3 class="modal-title text-center" id="modal-title">Nueva Evaluación</h3>
         </div>
             <div class="modal-body" id="modal-body">
                 <div class="form-group">
                         <label for="inputAsignatura">Asignatura</label>
-                        <select class="form-control" ng-repeat="item in subjects" id="asignatura" ng-model="newReview.asignatura">
-                         <option ng-value="item.ramos.id">{{item.ramos.sigla}}</option>
+                        <select class="form-control" id="asignatura" ng-model="newReview.asignatura">
+                         <option ng-repeat="item in subjects" ng-value="item.ramos.id">{{item.ramos.sigla}}</option>
                         </select>
                 </div>
                 <div class="form-group">
                     <label for="inputTitulo">Titulo</label>
-                    <input type="text" class="form-control" id="inputTitulo" ng-model="newReview.titulo" placeholder="Titulo">
+                    <input type="text" class="form-control" id="inputTitulo" ng-model="newReview.title" placeholder="Titulo">
                 </div>
                 <div class="form-group">
-                    <label for="inputFecha">Fecha</label>
-                    <input type="date" class="form-control" id="inputFecha" ng-model="newReview.fechaEvaluacion" placeholder="DD/MM/AAAA">
+                    <label for="inputColorPrimario">Color Primario</label>
+                    <input type="color" class="form-control" id="inputColor" ng-model="newReview.colorPrimary">
+                </div>
+                <div class="form-group">
+                    <label for="inputColorSecundario">Color Secundario</label>
+                    <input type="color" class="form-control" id="inputColorSecundario" ng-model="newReview.colorSecondary">
+                </div>
+                <div class='input-group date'>
+                    <label for="inputFechaInicio">Fecha Inicio</label>
+                    <input type="text" class="form-control" id='inputFechaInicio' ng-model="newReview.fechaStartsAt" placeholder="DD/MM/AAAA"/>
+                </div>
+                <div class='input-group date'>
+                    <label for="inputFechaTermino">Fecha Termino</label>
+                    <input type="text" class="form-control" id="inputFechaTermino" ng-model="newReview.fechaEndsAt" placeholder="DD/MM/AAAA"/>
                 </div>
                 <div class="form-group">
                     <label for="inputNota">Nota:</label>
-                    <input type="text" class="form-control" id="inputNota" ng-model="newReview.nota" >
+                    <input type="text" class="form-control" id="inputNota" ng-model="newReview.note" >
                 </div>                    
-                </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="button" ng-click="modalShowUser()">OK</button>
                     <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+                </div>
             </div>
+            <script type="text/javascript">
+                        $(function () {
+                            $('#inputFechaInicio').datetimepicker();
+                            $('#inputFechaTermino').datetimepicker();
+                            });
+                        </script>
+
     </script>
+    
+
 
     <script type="text/ng-template" id="modalShowUsers.html">
         <div class="modal-header">
@@ -179,11 +199,11 @@
         <div class="modal-header">
             <h3 class="modal-title text-center" id="modal-title">Mostrar Usuario</h3>
         </div>
-            <div class="modal-body" id="modal-body" ng-repeat="item in subjects">
+            <div class="modal-body" id="modal-body">
                  <pre>{{ users | json }}</pre>
                   <!--<pre>{{ users.user.subjects }}</pre>-->
                  <!--<pre >{{ user_id }}</pre>-->
-                 <pre >{{ item.ramos.sigla }}</pre>
+                 <!--<pre >{{ item.ramos.sigla }}</pre>-->
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
