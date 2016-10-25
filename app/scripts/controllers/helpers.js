@@ -108,6 +108,12 @@ angular.module('proyectoApiRestFrontendApp')
 
                     Review.delete();
 
+                    for(var i=0;i<args.length;i++){
+                        if(review.id == args[i].id){
+                            args.splice(i,1);
+                        }
+                    }
+
 
 
                     $scope.closeModal = function(){
