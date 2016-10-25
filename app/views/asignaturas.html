@@ -19,13 +19,57 @@
             </thead>
             <tbody>
                 <tr ng-repeat="subject in semesterSubjects">
-                    <td class="col-md-5">{{subject.name}}</td>
+                    <td class="col-md-5">{{subject.name}} ({{subject.initials}})</td>
                     <td class="col-md-2"><button class="btn btn-danger center-block" ng-click="eliminarSubject(subject.id)"><i class="fa fa-times"></i> Eliminar</button></td>
                 </tr>
             </tbody>
         </table>
+        <button class="btn btn-primary center-block" type="button" ng-click="modalRegisterUserSubject()"><i class="glyphicon glyphicon-plus"></i> Asignar Ramo</button>
         <br>
         <br>
     </div>
+
+    <script type="text/ng-template" id="modalRegisterUserSubject.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center">Asignar Ramo</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputAsignatura">Asignaturas</label>
+                <select class="form-control" id="inputAsignatura" ng-model="newUserSubject.subject_id" ng-options="item.id as item.name for item in subjects">
+                    <option value="" selected="selected" hidden="hidden">Seleccionar...</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary pull-left" type="button" ng-click="modalNewSubject()"><i class="glyphicon glyphicon-plus"></i> Registrar Asignatura</button>
+            <button class="btn btn-primary" type="button" ng-click="saveUserSubject()">OK</button>
+            <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="modalNewSubject.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center">Nueva Asignatura</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputTituloModalNewSubject">Titulo</label>
+                <input type="text" class="form-control" id="inputTituloModalNewSubject" ng-model="newSubject.name" placeholder="Titulo">
+            </div>
+            <div class="form-group">
+                <label for="inputSiglaModalNewSubject">Sigla</label>
+                <input type="text" class="form-control" id="inputSiglaModalNewSubject" ng-model="newSubject.initials" placeholder="Sigla">
+            </div>
+            <div class="form-group">
+                <label for="inputCreditosModalNewSubject">Creditos</label>
+                <input type="number" class="form-control" id="inputCreditosModalNewSubject" ng-model="newSubject.credits" placeholder="Creditos">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="saveSubject()">OK</button>
+            <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+        </div>
+    </script>
 
 </div>

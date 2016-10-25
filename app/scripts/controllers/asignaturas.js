@@ -29,4 +29,8 @@ angular.module('proyectoApiRestFrontendApp')
                         $scope.semesterSubjects = SemesterSubjects.query();
                 });
         }
+
+        $scope.modalRegisterUserSubject = function(){
+                alert.registerUserSubject('modalRegisterUserSubject.html',$scope.semesterSubjects,$scope.semester);
+        };
     });

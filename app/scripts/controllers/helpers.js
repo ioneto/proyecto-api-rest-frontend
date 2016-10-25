@@ -65,7 +65,7 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
-        function registerUserSubject(modalUrl,vista) {
+        function registerUserSubject(modalUrl,userSubjects,semester) {
             return $uibModal.open({
                 templateUrl: modalUrl,
                 controller: function($uibModalInstance, $scope, $resource){
@@ -97,11 +97,18 @@ angular.module('proyectoApiRestFrontendApp')
 
                     $scope.saveUserSubject = function(){
                         $scope.newUserSubject.user_id = 1;
-                        var UserSubject = $resource('http://localhost:3000/users/:idUser/subjects/:idSubject', {idUser: $scope.newUserSubject.user_id, idSubject: $scope.newUserSubject.subject_id});
+                        $scope.newUserSubject.semester = semester;
+                        var UserSubject = $resource('http://localhost:3000/users/:id/subjects', {id: 1});
                         var newUserSubject = UserSubject.save($scope.newUserSubject);
                         newUserSubject.$promise.then(function(){
-                            $uibModalInstance.dismiss('cancel');
-                            return newUserSubject.semester;
+                            console.log(newUserSubject);
+                            var Subject = $resource('http://localhost:3000/subjects/:id', {id: newUserSubject.ramos.id});
+                            var subject = Subject.get();
+                            subject.$promise.then(function(){
+
+                                userSubjects.push(subject);
+                                $uibModalInstance.dismiss('cancel');
+                            });
                         });
                     }
 
