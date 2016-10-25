@@ -1,9 +1,9 @@
 angular.module('proyectoApiRestFrontendApp')
     .factory('alert', function($uibModal) {
-        function newReview(modalUrl) {
+        function newReview(modalUrl,events) {
             return $uibModal.open({
                 templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope, $resource){
+                controller: function($uibModalInstance ,$scope, $resource, calendarConfig){
 
                     var UserSubjects = $resource('http://localhost:3000/users/:id/subjects', {id: 1});
                     $scope.userSubjects= UserSubjects.query();
@@ -22,15 +22,37 @@ angular.module('proyectoApiRestFrontendApp')
                             $scope.newReview.user_subject_id = userSubject.id;
                             var startDate = $scope.newReview.start_date;
                             var startHour = $scope.newReview.start_hour;
-                            startHour.setHours(startHour.getHours() - 3);
                             $scope.newReview.start_date = new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),startHour.getHours(),startHour.getMinutes(),0);
                             var endDate = $scope.newReview.end_date;
                             var endHour = $scope.newReview.end_hour;
-                            endHour.setHours(endHour.getHours() - 3);
                             $scope.newReview.end_date = new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),endHour.getHours(),endHour.getMinutes(),0);
-                            console.log($scope.newReview);
                             $scope.newReview = Review.save($scope.newReview);
                             $scope.newReview.$promise.then(function(){
+                                var actions = [{
+                                    label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
+                                    onClick: function(args) {
+                                        alert.show('Edited', args.calendarEvent);
+                                    }
+                                }, {
+                                    label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+                                    onClick: function(args) {
+                                        alert.show('Deleted', args.calendarEvent);
+                                    }
+                                }];
+
+                                var review = $scope.newReview;
+                                events.push({
+                                    "id"       : review.id,
+                                    "title"    : review.title+" ("+userSubject.subject.initials+")",
+                                    "color.primary"    : review.primary_color,
+                                    "color.secondary"  :review.secondary_color,
+                                    "color"    : calendarConfig.colorTypes.important,
+                                    "startsAt" : new Date(review.start_date),
+                                    "endsAt"   : new Date(review.end_date),
+                                    "draggable": true,
+                                    "resizable": true,
+                                    "actions"  : actions
+                                });
                                 $uibModalInstance.dismiss('cancel');
                             });
                         });
@@ -110,21 +132,106 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
+        function editarReview(modalUrl, evento, events) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance, $scope, $resource, calendarConfig){
+
+                    var UserSubjects = $resource('http://localhost:3000/users/:id/subjects', {id: 1});
+                    $scope.userSubjects= UserSubjects.query();
+
+                    cargarDatePicker($scope);
+
+                    var Review = $resource('http://localhost:3000/reviews/:id', {id: evento.id});
+                    var review = Review.get();
+                    review.$promise.then(function(){
+                        $scope.review = {};
+                        $scope.review.id = review.id;
+                        $scope.review.subject_id = review.user_subject.subject_id;
+                        $scope.review.title = review.title;
+                        $scope.review.primary_color = review.primary_color;
+                        $scope.review.secondary_color = review.secondary_color;
+                        $scope.review.start_date = new Date(review.start_date);
+                        $scope.review.end_date = new Date(review.end_date);
+                        $scope.review.start_hour = new Date(review.start_date);
+                        $scope.review.end_hour = new Date(review.end_date);
+                        $scope.review.score = review.score;
+                        console.log(review);
+                        console.log($scope.review);
+                    });
+
+                    $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                    $scope.submitReview = function(){
+                        var Review = $resource('http://localhost:3000/reviews/:idReview',
+                            {idReview: $scope.review.id},
+                            {update: { method:'PUT' }});
+                        var startDate = $scope.review.start_date;
+                        var startHour = $scope.review.start_hour;
+                        $scope.review.start_date = new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),startHour.getHours(),startHour.getMinutes(),0);
+                        var endDate = $scope.review.end_date;
+                        var endHour = $scope.review.end_hour;
+                        $scope.review.end_date = new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),endHour.getHours(),endHour.getMinutes(),0);
+                        $scope.review = Review.update($scope.review);
+                        $scope.review.$promise.then(function(){
+                            var UserSubject = $resource('http://localhost:3000/user_subjects/:idUserSubject', {idUserSubject: $scope.review.user_subject_id});
+                            var userSubject = UserSubject.get();
+                            userSubject.$promise.then(function(){
+                                console.log(userSubject);
+                                var actions = [{
+                                    label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
+                                    onClick: function(args) {
+                                        $scope.modalEditarReview(args.calendarEvent);
+                                    }
+                                }, {
+                                    label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+                                    onClick: function(args) {
+                                        alert.show('Deleted', args.calendarEvent);
+                                    }
+                                }];
+
+                                var review = $scope.review;
+
+                                for (var i = 0; i < events.length; i++) {
+                                    if(events[i].id == review.id){
+                                        events.splice(i,1);
+                                    }
+                                }
+
+                                events.push({
+                                    "id"       : review.id,
+                                    "title"    : review.title+" ("+userSubject.ramos.initials+")",
+                                    "color.primary"    : review.primary_color,
+                                    "color.secondary"  :review.secondary_color,
+                                    "color"    : calendarConfig.colorTypes.important,
+                                    "startsAt" : new Date(review.start_date),
+                                    "endsAt"   : new Date(review.end_date),
+                                    "draggable": true,
+                                    "resizable": true,
+                                    "actions"  : actions
+                                });
+                                $uibModalInstance.dismiss('cancel');
+                            })
+                        });
+                    }
+                },
+            });
+        }
+
         function cargarDatePicker(scope){
             scope.today = function() {
-                scope.newReview.start_date = new Date();
+                scope.review.start_date = new Date();
             };
             scope.clear = function() {
-                scope.newReview.start_date = null;
+                scope.review.start_date = null;
             };
             scope.abrirFechaInicio = function() {
                 scope.fechaInicio.opened = true;
             };
             scope.abrirFechaTermino = function() {
                 scope.fechaTermino.opened = true;
-            };
-            scope.setDate = function(year, month, day) {
-                scope.newReview.start_date = new Date(year, month, day);
             };
             scope.format = 'dd/MM/yyyy'
             scope.fechaInicio = {
@@ -139,6 +246,7 @@ angular.module('proyectoApiRestFrontendApp')
         return {
             newReview: newReview,
             registerUserSubject: registerUserSubject,
-            newSubject: newSubject
+            newSubject: newSubject,
+            editarReview: editarReview
         };
     });

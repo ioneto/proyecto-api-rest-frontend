@@ -14,11 +14,52 @@ angular.module('proyectoApiRestFrontendApp')
         };
 
         $scope.modalNewReview = function(){
-            alert.newReview('modalNewReview.html',$scope.users,$scope.subjects);
+            alert.newReview('modalNewReview.html',$scope.events);
+        };
+
+        $scope.modalEditarReview = function(evento){
+            alert.editarReview('modalEditarReview.html',evento,$scope.events);
         };
 
         $scope.calendarView = 'year';
         $scope.viewDate = moment().startOf('month').toDate();
-        $scope.cellIsOpen = true;
+
+        var UserSubjects = $resource('http://localhost:3000/users/:id/user-subjects', {id: 1});
+        $scope.userSubjects = UserSubjects.query();
+        $scope.userSubjects.$promise.then(function(){
+            $scope.cellIsOpen = true;
+
+            var actions = [{
+                label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
+                onClick: function(args) {
+                    $scope.modalEditarReview(args.calendarEvent);
+                }
+            }, {
+                label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+                onClick: function(args) {
+                    alert.show('Deleted', args.calendarEvent);
+                }
+            }];
+
+            $scope.events = [];
+
+            for(var i = 0; i< $scope.userSubjects.length; i++) {
+                for(var j=0; j<$scope.userSubjects[i].reviews.length; j++){
+                    var review = $scope.userSubjects[i].reviews[j];
+                    $scope.events.push({
+                        "id"       : review.id,
+                        "title"    : review.title+" ("+$scope.userSubjects[i].subject.initials+")",
+                        "color.primary"    : review.primary_color,
+                        "color.secondary"  :review.secondary_color,
+                        "color"    : calendarConfig.colorTypes.important,
+                        "startsAt" : new Date(review.start_date),
+                        "endsAt"   : new Date(review.end_date),
+                        "draggable": true,
+                        "resizable": true,
+                        "actions"  : actions
+                    });
+                }
+            }
+        });
 
     });

@@ -161,6 +161,97 @@
             </div>
     </script>
 
+    <script type="text/ng-template" id="modalEditarReview.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center">Editar Evaluación</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputAsignaturaEditarReview">Asignatura</label>
+                        <select class="form-control" id="inputAsignaturaEditarReview" ng-model="review.subject_id" ng-options="item.id as item.name for item in userSubjects"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputTituloEditarReview">Titulo</label>
+                        <input type="text" class="form-control" id="inputTituloEditarReview" ng-model="review.title" placeholder="Titulo">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputColorPrimarioEditar">Color Primario</label>
+                        <input type="color" class="form-control" id="inputColorPrimarioEditar" ng-model="review.primary_color">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputColorSecundarioEditar">Color Secundario</label>
+                        <input type="color" class="form-control" id="inputColorSecundarioEditar" ng-model="review.secondary_color">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputFechaInicioEditar">Fecha Inicio</label>
+                        <p class="input-group">
+                            <input type="text" id="inputFechaInicioEditar" class="form-control" uib-datepicker-popup="{{format}}" ng-model="review.start_date" is-open="fechaInicio.opened" close-text="Close" placeholder="DD/MM/YYYY"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="abrirFechaInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputFechaTerminoEditar">Fecha Término</label>
+                        <p class="input-group">
+                            <input type="text" id="inputFechaTerminoEditar" class="form-control" uib-datepicker-popup="{{format}}" ng-model="review.end_date" is-open="fechaTermino.opened" close-text="Close" placeholder="DD/MM/YYYY"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="abrirFechaTermino()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputHoraInicioEditar">Hora Inicio</label>
+                        <div uib-timepicker id="inputHoraInicioEditar" ng-model="review.start_hour" hour-step="1" minute-step="1" show-meridian="false"></div>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputHoraTerminoEditar">Hora Término</label>
+                        <div uib-timepicker id="inputHoraTerminoEditar" ng-model="review.end_hour" hour-step="1" minute-step="1" show-meridian="false"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputNotaEditarReview">Nota</label>
+                        <input type="text" class="form-control" id="inputNotaEditarReview" ng-model="review.score" placeholder="Nota">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="submitReview()">OK</button>
+                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </script>
+
+
     <script type="text/ng-template" id="modalRegisterUserSubject.html">
         <div class="modal-header">
             <h3 class="modal-title text-center">Asignar Ramo</h3>
