@@ -76,86 +76,90 @@
     </div>
 
     <br>
-    <!--<script type="text/ng-template" id="modalNewEvent.html">
-        <div class="modal-header">
-            <h3 class="modal-title text-center" id="modal-title">Nuevo Evento</h3>
-        </div>
-        <form>
-            <div class="modal-body" id="modal-body">
-
-                    <div class="form-group">
-                        <label for="inputAsignatura">Asignatura</label>
-                        <input type="email" class="form-control" id="inputAsignatura" ng-model="asignatura" placeholder="Asignatura">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputTitulo">Titulo</label>
-                        <input type="text" class="form-control" id="inputTitulo" ng-model="titulo" placeholder="Titulo">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputFecha">Fecha</label>
-                        <input type="date" class="form-control" id="inputFecha" ng-model="fecha" placeholder="DD/MM/AAAA">
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" type="button" ng-click="submitModal()">OK</button>
-                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
-            </div>
-        </form>
-    </script>-->
-
 
      <script type="text/ng-template" id="modalNewReview.html">
-
         <div class="modal-header">
-            <h3 class="modal-title text-center">Nueva Evaluación</h3>
+            <h3 class="modal-title text-center">Registrar Evaluación</h3>
         </div>
             <div class="modal-body">
-                <div class="form-group">
-                        <label for="inputAsignaturaNewReview">Asignatura</label>
-                        <select class="form-control" id="inputAsignaturaNewReview" ng-model="newReview.asignatura">
-                         <option ng-repeat="item in subjects" ng-value="item.ramos.id">{{item.ramos.sigla}}</option>
-                        </select>
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                                <label for="inputAsignaturaNewReview">Asignatura</label>
+                            <select class="form-control" id="inputAsignaturaNewReview" ng-model="newReview.subject_id" ng-options="item.id as item.name for item in userSubjects">
+                                <option value="" selected="selected" hidden="hidden">Seleccionar...</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputTitulo">Titulo</label>
-                    <input type="text" class="form-control" ng-model="newReview.title" placeholder="Titulo">
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label for="inputTituloNewReview">Titulo</label>
+                            <input type="text" class="form-control" id="inputTituloNewReview" ng-model="newReview.title" placeholder="Titulo">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputColorPrimario">Color Primario</label>
-                    <input type="color" class="form-control" id="inputColorPrimario" ng-model="newReview.colorPrimary">
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label for="inputColorPrimario">Color Primario</label>
+                            <input type="color" class="form-control" id="inputColorPrimario" ng-model="newReview.primary_color">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputColorSecundario">Color Secundario</label>
-                    <input type="color" class="form-control" id="inputColorSecundario" ng-model="newReview.colorSecondary">
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label for="inputColorSecundario">Color Secundario</label>
+                            <input type="color" class="form-control" id="inputColorSecundario" ng-model="newReview.secondary_color">
+                        </div>
+                    </div>
                 </div>
-                <div class='input-group date'>
-                    <label for="inputFechaInicio">Fecha Inicio</label>
-                    <input type="text" class="form-control" id='inputFechaInicio' ng-model="newReview.fechaStartsAt" placeholder="DD/MM/AAAA"/>
+                <div class="row">
+                    <div class='col-md-6'>
+                            <div class="form-group">
+                                <label for="inputFechaInicio">Fecha Inicio</label>
+                                <p class="input-group">
+                                    <input type="text" id="inputFechaInicio" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newReview.start_date" is-open="fechaInicio.opened" close-text="Close" placeholder="DD/MM/YYYY"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="abrirFechaInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label for="inputFechaTermino">Fecha Término</label>
+                            <p class="input-group">
+                                <input type="text" id="inputFechaTermino" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newReview.end_date" is-open="fechaTermino.opened" close-text="Close" placeholder="DD/MM/YYYY"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="abrirFechaTermino()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class='input-group date'>
-                    <label for="inputFechaTermino">Fecha Termino</label>
-                    <input type="text" class="form-control" id="inputFechaTermino" ng-model="newReview.fechaEndsAt" placeholder="DD/MM/AAAA"/>
-                </div>
-                <div class="form-group">
-                    <label for="inputNota">Nota:</label>
-                    <input type="text" class="form-control" id="inputNota" ng-model="newReview.note" >
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label for="inputHoraInicio">Hora Inicio</label>
+                            <div uib-timepicker id="inputHoraInicio" ng-model="newReview.start_hour" hour-step="1" minute-step="1" show-meridian="false"></div>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label for="inputHoraTermino">Hora Término</label>
+                            <div uib-timepicker id="inputHoraTermino" ng-model="newReview.end_hour" hour-step="1" minute-step="1" show-meridian="false"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="button" ng-click="modalShowUser()">OK</button>
+                    <button class="btn btn-primary" type="button" ng-click="saveReview()">OK</button>
                     <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
                 </div>
             </div>
-
-        <script type="text/javascript">
-            $(function () {
-                $('#inputFechaInicio').datetimepicker();
-                $('#inputFechaTermino').datetimepicker();
-            });
-        </script>
-
     </script>
-
-    <script></script>
 
     <script type="text/ng-template" id="modalRegisterUserSubject.html">
         <div class="modal-header">

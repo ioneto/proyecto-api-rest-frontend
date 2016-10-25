@@ -20,7 +20,8 @@ angular
     'ngTouch',
     'mwl.calendar',
     'ui.bootstrap',
-    'restangular'
+    'restangular',
+    'angular.filter'
   ])
   .config(function ($routeProvider, $httpProvider) {
     $routeProvider
@@ -28,6 +29,11 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main'
+      })
+      .when('/asignaturas', {
+        templateUrl: 'views/asignaturas.html',
+        controller: 'AsignaturasCtrl',
+        controllerAs: 'asignaturas'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
@@ -43,5 +49,10 @@ angular
       delete $httpProvider.defaults.headers.common["X-Requested-With"];
       $httpProvider.defaults.headers.common["Accept"] = "application/json";
       $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
+
+      $(".nav a").on("click", function(){
+          $(".nav").find(".active").removeClass("active");
+          $(this).parent().addClass("active");
+      });
 
   });

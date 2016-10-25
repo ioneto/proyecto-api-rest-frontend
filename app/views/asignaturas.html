@@ -1,0 +1,31 @@
+<div ng-controller="AsignaturasCtrl">
+    <h2 class="text-center">Asignaturas {{semester}}</h2>
+    <div class="container">
+        <div class="col-sm-3"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Semestre</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="selectSemestre" ng-model="semester" ng-change="updateSubjectsTable()" ng-options="userSubject.semester as userSubject.semester for userSubject in userSubjects | unique: 'semester'"></select>
+            </div>
+        </div>
+        <br>
+        <br>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Asignatura</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="subject in semesterSubjects">
+                    <td class="col-md-5">{{subject.name}}</td>
+                    <td class="col-md-2"><button class="btn btn-danger center-block" ng-click="eliminarSubject(subject.id)"><i class="fa fa-times"></i> Eliminar</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <br>
+    </div>
+
+</div>

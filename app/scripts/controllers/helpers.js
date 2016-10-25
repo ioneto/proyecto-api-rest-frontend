@@ -1,57 +1,49 @@
 angular.module('proyectoApiRestFrontendApp')
     .factory('alert', function($uibModal) {
-
-        function newReview(modalUrl,users,subjects,Review) {
+        function newReview(modalUrl) {
             return $uibModal.open({
                 templateUrl: modalUrl,
                 controller: function($uibModalInstance ,$scope, $resource){
+
+                    var UserSubjects = $resource('http://localhost:3000/users/:id/subjects', {id: 1});
+                    $scope.userSubjects= UserSubjects.query();
+                    $scope.newReview = {};
+                    $scope.newReview.primary_color = '#1e90ff';
+                    $scope.newReview.secondary_color = '#d1e8ff';
+                    $scope.newReview.start_date = new Date();
+                    $scope.newReview.end_date = new Date();
+                    cargarDatePicker($scope);
+
+                    $scope.saveReview = function(){
+                        var Review = $resource('http://localhost:3000/reviews/:id', {id: '@id'});
+                        var UserSubjects = $resource('http://localhost:3000/users/:user_id/user-subjects/subjects/:subject_id', {user_id: 1, subject_id: $scope.newReview.subject_id});
+                        var userSubject = UserSubjects.get();
+                        userSubject.$promise.then(function(){
+                            $scope.newReview.user_subject_id = userSubject.id;
+                            var startDate = $scope.newReview.start_date;
+                            var startHour = $scope.newReview.start_hour;
+                            startHour.setHours(startHour.getHours() - 3);
+                            $scope.newReview.start_date = new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),startHour.getHours(),startHour.getMinutes(),0);
+                            var endDate = $scope.newReview.end_date;
+                            var endHour = $scope.newReview.end_hour;
+                            endHour.setHours(endHour.getHours() - 3);
+                            $scope.newReview.end_date = new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),endHour.getHours(),endHour.getMinutes(),0);
+                            console.log($scope.newReview);
+                            $scope.newReview = Review.save($scope.newReview);
+                            $scope.newReview.$promise.then(function(){
+                                $uibModalInstance.dismiss('cancel');
+                            });
+                        });
+                    }
+
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
-
-                    //var Users = $resource('http://localhost:3000/users/:userId', {userId:'@id'});
-                        //$scope.users= Users.get({userId: user_id});
-
-                    var rew = $resource('http://localhost:3000/users/1/subjects/1/reviews/:id', 
-                        {id:'@id'},{specialAction: {method: 'POST'}});
-
-                    $scope.users=users;//Users.get({userId: user});
-                    $scope.subjects=subjects;
-                    $scope.Review=Review; 
-                    $scope.newReview={};
-                    $scope.newReview.colorSecondary='#f0fb28';
-                    $scope.reviews=[];  
-
-
-                    $scope.modalShowUser = function(){
-                        //$scope.reviews.push($scope.newReview);
-                        console.log($scope.newReview);
-                        //grunt.log.write("hola");
-                        rew.specialAction($scope.newReview);
-                        showReview('modalShow.html',$scope.newReview, $scope.users);
-                    }                 
                 },
             });
         }
 
-        function showReview(modalUrl,reviews,users) {
-            return $uibModal.open({
-                templateUrl: modalUrl,
-                controller: function($uibModalInstance ,$scope){
-                    $scope.closeModal = function(){
-                        $uibModalInstance.dismiss('cancel');
-                    }
-
-                    //var Users = $resource('http://localhost:3000/users/:userId', {userId:'@id'});
-                        //$scope.users= Users.get({userId: user_id});
-                    $scope.users=users;
-                    $scope.reviews=reviews;
-               
-                },
-            });
-        }
-
-        function registerUserSubject(modalUrl) {
+        function registerUserSubject(modalUrl,vista) {
             return $uibModal.open({
                 templateUrl: modalUrl,
                 controller: function($uibModalInstance, $scope, $resource){
@@ -74,6 +66,7 @@ angular.module('proyectoApiRestFrontendApp')
                             }
                         });
                     });
+
                     $scope.newUserSubject = {};
 
                     $scope.modalNewSubject = function(){
@@ -86,46 +79,13 @@ angular.module('proyectoApiRestFrontendApp')
                         var newUserSubject = UserSubject.save($scope.newUserSubject);
                         newUserSubject.$promise.then(function(){
                             $uibModalInstance.dismiss('cancel');
+                            return newUserSubject.semester;
                         });
                     }
 
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
-
-                    /*$scope.users=users;
-                    $scope.subject={};
-                    $scope.us=us;
-                    //$scope.subjects=[];
-                    $scope.sub=[];
-                    var a=[];
-
-                    var Subjects = $resource('http://localhost:3000/subjects/:subjectId/', 
-                        {subjectId:'@id'});
-                    $scope.subjects = Subjects.query()/*function(){
-                        $scope.subjects=ramos;
-                        //$scope.ramos=ramos;
-                        for (var x = 0, lent = $scope.users.subjects.length; x < lent; x++){
-                            for (var i = 0, len = ramos.length; i < len; i++){
-                                if($scope.users.subjects[x].sigla==ramos[i].sigla){
-                                    a.push(i)
-                                   console.log(a);                       
-                                }
-                            }
-                        } 
-
-                        console.log(ramos.length-a.length);
-
-                        for (var x = 0, lent = a.length; x < lent; x++){
-                            for (var i = 0, len = ramos.length; i < len; i++){
-                                if(a[x]!=i){
-                                    $scope.sub.push(ramos[i]);                                                          
-                                }
-                            }
-                        } 
-
-                        console.log($scope.subjects);
-                    });*/
                 },
             });
         }
@@ -150,9 +110,34 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
+        function cargarDatePicker(scope){
+            scope.today = function() {
+                scope.newReview.start_date = new Date();
+            };
+            scope.clear = function() {
+                scope.newReview.start_date = null;
+            };
+            scope.abrirFechaInicio = function() {
+                scope.fechaInicio.opened = true;
+            };
+            scope.abrirFechaTermino = function() {
+                scope.fechaTermino.opened = true;
+            };
+            scope.setDate = function(year, month, day) {
+                scope.newReview.start_date = new Date(year, month, day);
+            };
+            scope.format = 'dd/MM/yyyy'
+            scope.fechaInicio = {
+                opened: false
+            };
+            scope.fechaTermino = {
+                opened: false
+            };
+
+        }
+
         return {
             newReview: newReview,
-            showReview: showReview,
             registerUserSubject: registerUserSubject,
             newSubject: newSubject
         };
