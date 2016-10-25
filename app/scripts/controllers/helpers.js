@@ -65,6 +65,55 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
+        function deleteReview(modalUrl, review,args) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope,$resource) {
+                
+                    var Review = $resource('http://localhost:3000/users/:idUser/reviews/:idReview',
+                     {idUser: review.user_id, idReview: review.id});
+
+                    Review.delete();
+
+
+
+                    $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                },
+            });
+        }
+
+        function registerScore(modalUrl,review) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope,$resource) {
+                    //$scope.review=0re
+                    //console.log(review.user_subject_id);users/1/reviews/3
+                    $scope.review={};
+                    
+                    //console.log(review.user_id);
+                     //$scope.reviews = review;
+
+                     $scope.saveScore = function(){
+                        //console.log($scope.review);
+                        var Review = $resource('http://localhost:3000/users/:idUser/reviews/:idReview',
+                            {idUser: review.user_id, idReview: review.id},
+                            {update: { method:'PUT' }});
+                        Review.update($scope.review);
+                        showScore('modalShowUpdate.html',$scope.review);
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                     $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                },
+            });
+        }
+
         function registerUserSubject(modalUrl,vista) {
             return $uibModal.open({
                 templateUrl: modalUrl,
@@ -220,6 +269,24 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
+        function showScore(modalUrl,review) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope) {
+                    //$scope.review=0re
+                    //console.log(review.user_subject_id);users/1/reviews/3
+                    $scope.title="Nota Registrada";
+                    $scope.score=review.score;
+
+                     $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                },
+            });
+        }
+
+
         function cargarDatePicker(scope){
             scope.today = function() {
                 scope.review.start_date = new Date();
@@ -245,6 +312,9 @@ angular.module('proyectoApiRestFrontendApp')
 
         return {
             newReview: newReview,
+            deleteReview: deleteReview,
+            registerScore: registerScore,
+            showScore: showScore,
             registerUserSubject: registerUserSubject,
             newSubject: newSubject,
             editarReview: editarReview

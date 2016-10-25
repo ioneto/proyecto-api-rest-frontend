@@ -37,8 +37,14 @@ angular.module('proyectoApiRestFrontendApp')
             }, {
                 label: '<i class=\'glyphicon glyphicon-remove\'></i>',
                 onClick: function(args) {
-                    alert.show('Deleted', args.calendarEvent);
+                    alert.deleteReview('modalDelete.html', args.calendarEvent,$scope.events);
                 }
+            },
+            {
+            label: '<i class=\'glyphicon glyphicon-ok-sign\'></i>',
+            onClick: function(args) {
+                alert.registerScore('modalRegisterScore.html', args.calendarEvent);
+            }
             }];
 
             $scope.events = [];
@@ -56,6 +62,7 @@ angular.module('proyectoApiRestFrontendApp')
                         "endsAt"   : new Date(review.end_date),
                         "draggable": true,
                         "resizable": true,
+                        "user_id"  : $scope.userSubjects[i].user_id,
                         "actions"  : actions
                     });
                 }
