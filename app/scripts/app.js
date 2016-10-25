@@ -40,6 +40,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+        .when('/contact',{
+            templateUrl: 'views/contacto.html',
+            controller: 'ContactoCtrl',
+            controllerAs: 'contacto'
+        })
       .otherwise({
         redirectTo: '/'
       });

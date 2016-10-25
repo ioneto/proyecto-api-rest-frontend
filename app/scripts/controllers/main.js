@@ -24,6 +24,10 @@ angular.module('proyectoApiRestFrontendApp')
         $scope.calendarView = 'year';
         $scope.viewDate = moment().startOf('month').toDate();
 
+        $scope.eventClicked = function(event){
+            alert.showReview('modalReview.html',event);
+        }
+
         var UserSubjects = $resource('http://localhost:3000/users/:id/user-subjects', {id: 1});
         $scope.userSubjects = UserSubjects.query();
         $scope.userSubjects.$promise.then(function(){
@@ -37,8 +41,14 @@ angular.module('proyectoApiRestFrontendApp')
             }, {
                 label: '<i class=\'glyphicon glyphicon-remove\'></i>',
                 onClick: function(args) {
-                    alert.show('Deleted', args.calendarEvent);
+                    alert.deleteReview('modalDelete.html', args.calendarEvent,$scope.events);
                 }
+            },
+            {
+            label: '<i class=\'glyphicon glyphicon-ok-sign\'></i>',
+            onClick: function(args) {
+                alert.registerScore('modalRegisterScore.html', args.calendarEvent);
+            }
             }];
 
             $scope.events = [];
@@ -56,6 +66,7 @@ angular.module('proyectoApiRestFrontendApp')
                         "endsAt"   : new Date(review.end_date),
                         "draggable": true,
                         "resizable": true,
+                        "user_id"  : $scope.userSubjects[i].user_id,
                         "actions"  : actions
                     });
                 }

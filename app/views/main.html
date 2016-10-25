@@ -251,6 +251,124 @@
         </div>
     </script>
 
+    <script type="text/ng-template" id="modalReview.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center">Ver Evaluación</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputTituloReview">Titulo</label>
+                        <input disabled="disabled" type="text" class="form-control" id="inputTituloReview" ng-model="review.title" placeholder="Titulo">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputColorPrimarioVer">Color Primario</label>
+                        <input disabled="disabled" type="color" class="form-control" id="inputColorPrimarioVer" ng-model="review.primary_color">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="form-group">
+                        <label for="inputColorSecundarioVer">Color Secundario</label>
+                        <input disabled="disabled" type="color" class="form-control" id="inputColorSecundarioVer" ng-model="review.secondary_color">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputFechaInicioVer">Fecha Inicio</label>
+                        <p class="input-group">
+                            <input disabled="disabled" type="text" id="inputFechaInicioVer" class="form-control" uib-datepicker-popup="{{format}}" ng-model="review.start_date" is-open="fechaInicio.opened" close-text="Close" placeholder="DD/MM/YYYY"/>
+                            <span class="input-group-btn">
+                                <button disabled="disabled" type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputFechaTerminoVer">Fecha Término</label>
+                        <p class="input-group">
+                            <input disabled="disabled" type="text" id="inputFechaTerminoVer" class="form-control" uib-datepicker-popup="{{format}}" ng-model="review.end_date" is-open="fechaTermino.opened" close-text="Close" placeholder="DD/MM/YYYY"/>
+                            <span class="input-group-btn">
+                                <button disabled="disabled" type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputHoraInicioVer">Hora Inicio</label>
+                        <div ng-disabled="true" uib-timepicker id="inputHoraInicioVer" ng-model="review.start_hour" hour-step="1" minute-step="1" show-meridian="false"></div>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputHoraTerminoVer">Hora Término</label>
+                        <div ng-disabled="true" uib-timepicker id="inputHoraTerminoVer" ng-model="review.end_hour" hour-step="1" minute-step="1" show-meridian="false"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class="form-group">
+                        <label for="inputNotaReview">Nota</label>
+                        <input type="text" class="form-control" id="inputNotaReview" ng-model="review.score" placeholder="Nota" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="modalDelete.html">
+      <div class="modal-body">
+          <h3 class="modal-title">Evaluación Borrada</h3>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="closeModal()">OK</button>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="modalRegisterScore.html">
+      <div class="modal-header">
+            <h3 class="modal-title text-center">Registrar Evaluación</h3>
+        </div>
+      </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputScore">Nota</label>
+                <input type="number" class="form-control" id="inputScore" ng-model="review.score" placeholder="Nota">
+            </div>
+        </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="saveScore()">OK</button>
+            <button class="btn btn-default" type="button" ng-click="closeModal()">Cancel</button>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="modalShowUpdate.html">
+      <div class="modal-body">
+        <pre> <h3 class="modal-title">{{title}}</h3> <br>
+        <h3 class="modal-title"> Nota: {{score}} </h3></pre>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="closeModal()">OK</button>
+      </div>
+    </script>
+
 
     <script type="text/ng-template" id="modalRegisterUserSubject.html">
         <div class="modal-header">

@@ -31,14 +31,20 @@ angular.module('proyectoApiRestFrontendApp')
                                 var actions = [{
                                     label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
                                     onClick: function(args) {
-                                        alert.show('Edited', args.calendarEvent);
+                                        $scope.modalEditarReview(args.calendarEvent);
                                     }
                                 }, {
                                     label: '<i class=\'glyphicon glyphicon-remove\'></i>',
                                     onClick: function(args) {
-                                        alert.show('Deleted', args.calendarEvent);
+                                        alert.deleteReview('modalDelete.html', args.calendarEvent,$scope.events);
                                     }
-                                }];
+                                },
+                                    {
+                                        label: '<i class=\'glyphicon glyphicon-ok-sign\'></i>',
+                                        onClick: function(args) {
+                                            alert.registerScore('modalRegisterScore.html', args.calendarEvent);
+                                        }
+                                    }];
 
                                 var review = $scope.newReview;
                                 events.push({
@@ -61,6 +67,82 @@ angular.module('proyectoApiRestFrontendApp')
                     $scope.closeModal = function(){
                         $uibModalInstance.dismiss('cancel');
                     }
+                },
+            });
+        }
+
+        function showReview(modalUrl,event) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope,$resource) {
+
+                    var Review = $resource('http://localhost:3000/reviews/:id', {id: event.id});
+                    var review = Review.get();
+                    review.$promise.then(function(){
+                        $scope.review = {};
+                        $scope.review.title = review.title;
+                        $scope.review.primary_color = review.primary_color;
+                        $scope.review.secondary_color = review.secondary_color;
+                        $scope.review.start_date = new Date(review.start_date);
+                        $scope.review.end_date = new Date(review.end_date);
+                        $scope.review.start_hour = new Date(review.start_date);
+                        $scope.review.end_hour = new Date(review.end_date);
+                        $scope.review.score = review.score;
+                        var UserReview = $resource('http://localhost:3000/user_reviews/:id')
+                    });
+
+                    $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+                },
+            });
+        }
+
+        function deleteReview(modalUrl, review,args) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope,$resource) {
+                
+                    var Review = $resource('http://localhost:3000/users/:idUser/reviews/:idReview',
+                     {idUser: review.user_id, idReview: review.id});
+
+                    Review.delete();
+
+
+
+                    $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                },
+            });
+        }
+
+        function registerScore(modalUrl,review) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope,$resource) {
+                    //$scope.review=0re
+                    //console.log(review.user_subject_id);users/1/reviews/3
+                    $scope.review={};
+                    
+                    //console.log(review.user_id);
+                     //$scope.reviews = review;
+
+                     $scope.saveScore = function(){
+                        //console.log($scope.review);
+                        var Review = $resource('http://localhost:3000/users/:idUser/reviews/:idReview',
+                            {idUser: review.user_id, idReview: review.id},
+                            {update: { method:'PUT' }});
+                        Review.update($scope.review);
+                        showScore('modalShowUpdate.html',$scope.review);
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                     $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
                 },
             });
         }
@@ -97,18 +179,19 @@ angular.module('proyectoApiRestFrontendApp')
 
                     $scope.saveUserSubject = function(){
                         $scope.newUserSubject.user_id = 1;
-                        $scope.newUserSubject.semester = semester;
+                        if(semester) $scope.newUserSubject.semester = semester;
                         var UserSubject = $resource('http://localhost:3000/users/:id/subjects', {id: 1});
                         var newUserSubject = UserSubject.save($scope.newUserSubject);
                         newUserSubject.$promise.then(function(){
-                            console.log(newUserSubject);
-                            var Subject = $resource('http://localhost:3000/subjects/:id', {id: newUserSubject.ramos.id});
-                            var subject = Subject.get();
-                            subject.$promise.then(function(){
+                            if(semester) {
+                                var Subject = $resource('http://localhost:3000/subjects/:id', {id: newUserSubject.ramos.id});
+                                var subject = Subject.get();
+                                subject.$promise.then(function () {
 
-                                userSubjects.push(subject);
-                                $uibModalInstance.dismiss('cancel');
-                            });
+                                    userSubjects.push(subject);
+                                });
+                            }
+                            $uibModalInstance.dismiss('cancel')
                         });
                     }
 
@@ -195,9 +278,15 @@ angular.module('proyectoApiRestFrontendApp')
                                 }, {
                                     label: '<i class=\'glyphicon glyphicon-remove\'></i>',
                                     onClick: function(args) {
-                                        alert.show('Deleted', args.calendarEvent);
+                                        alert.deleteReview('modalDelete.html', args.calendarEvent,$scope.events);
                                     }
-                                }];
+                                },
+                                    {
+                                        label: '<i class=\'glyphicon glyphicon-ok-sign\'></i>',
+                                        onClick: function(args) {
+                                            alert.registerScore('modalRegisterScore.html', args.calendarEvent);
+                                        }
+                                    }];
 
                                 var review = $scope.review;
 
@@ -227,6 +316,24 @@ angular.module('proyectoApiRestFrontendApp')
             });
         }
 
+        function showScore(modalUrl,review) {
+            return $uibModal.open({
+                templateUrl: modalUrl,
+                controller: function($uibModalInstance ,$scope) {
+                    //$scope.review=0re
+                    //console.log(review.user_subject_id);users/1/reviews/3
+                    $scope.title="Nota Registrada";
+                    $scope.score=review.score;
+
+                     $scope.closeModal = function(){
+                        $uibModalInstance.dismiss('cancel');
+                    }
+
+                },
+            });
+        }
+
+
         function cargarDatePicker(scope){
             scope.today = function() {
                 scope.review.start_date = new Date();
@@ -252,8 +359,12 @@ angular.module('proyectoApiRestFrontendApp')
 
         return {
             newReview: newReview,
+            deleteReview: deleteReview,
+            registerScore: registerScore,
+            showScore: showScore,
             registerUserSubject: registerUserSubject,
             newSubject: newSubject,
-            editarReview: editarReview
+            editarReview: editarReview,
+            showReview: showReview
         };
     });
